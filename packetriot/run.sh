@@ -2,29 +2,28 @@
 set -e
 
 SERVER_REGION="$(bashio::config 'server_region')"
-FORCE_KEYGEN="$(bashio::config 'force_keygen')"
+FORCE_CLEANUP="$(bashio::config 'force_cleanup')"
+DESTINATION_SERVER="$(bashio::config 'destination_server')"
+DESTINATION_PORT="$(bashio::config 'destination_port')"
 server_regions=(us-west us-east eu-central asia-southeast australia us-south asia-south africa-south)
 config_dir=/data/config
 config_path=$config_dir/config.json
 
-if [[ $FORCE_KEYGEN = true ]] ; then
+if [[ $FORCE_CLEANUP = true ]] ; then
   rm -fr $config_dir
-end
+fi
 
 if [[ ! -d "$config_dir" ]] ; then
-  for i in "${!server_regions[@]}"; do
-    if [[ "${server_regions[$i]}" = "${SERVER_REGION}" ]]; then
-        echo ${i} | ./pktriot configure --url --config $config_path
+  for i in "${!server_regions[@]}" ; do
+    if [[ "${server_regions[$i]}" = "${SERVER_REGION}" ]] ; then
+        echo $(($i+1)) | ./pktriot configure --url --config $config_path
     fi
   done
-end
+  URL="$(bashio::jq $config_path '.hostname')"
 
-./pktriot info
+  ./pktriot tunnel http add --config $config_path --domain $URL --letsencrypt --destination $DESTINATION_SERVER --http $DESTINATION_PORT
+fi
 
-URL="$(bashio::jq $config_path 'hostname')"
+./pktriot info --config $config_path
 
-bashio::log.info "Your public address is ${URL}"
-
-./pktriot tunnel http add --domain $URL --letsencrypt --destination localhost --http 8123
-
-./pktriot start
+./pktriot start --config $config_path

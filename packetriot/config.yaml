@@ -1,5 +1,5 @@
 name: Tunnel with packetriot
-version: 0.1.0
+version: 1.0.0
 slug: packetriot
 description: Permanent tunnel with packetriot
 url: https://github.com/kvokka/home-assistant-addons
@@ -14,7 +14,11 @@ host_network: true
 map: []
 options:
   server_region: eu-central
-  force_keygen: false
+  force_cleanup: false
+  destination_server: homeassistant
+  destination_port: 8123
 schema:
   server_region: "match(us-west|us-east|eu-central|asia-southeast|australia|us-south|asia-south|africa-south)"
-  force_keygen: bool
+  force_cleanup: bool
+  destination_server: str
+  destination_port: int
