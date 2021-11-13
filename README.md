@@ -12,4 +12,3 @@ https://github.com/kvokka/home-assistant-addons
 
 ## Add-ons in this repository
  - **[packetriot](/packetriot/README.md)**: Permanent port forwarding through an SSH tunnel trough packetriot service.
-
