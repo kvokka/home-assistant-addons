@@ -1,4 +1,4 @@
-# Home Assistant Add-on: Autossh
+# Home Assistant Add-on: Packetriot
 
 The addon use https://packetriot.com/ service for the tunnel.
 This service will allow to use it for free with auto-generated DNS and
